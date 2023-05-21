@@ -18,5 +18,5 @@ The code is structured as follows. It relies heavily on object-oriented programm
     -   We define a `particle` class. This is a parent class for all particles and stores parameters for a given particle such as `mass`, `charge`, `number density`, etc. A specific particle, ie, `electron` would be an instance of this class with `mass` set to $\sim 0.5$ MeV. Then at any time the specific property can just be recalled by calling `electron.mass`. From this parent class, we define child classes: `baryon`, `lepton`, and `meson` that inherit these properties but then have additional functionality (for example, calculating $E_{F_i}$ is different for baryons which interact versus leptons which don't) and allow for summing over mesons or baryons separately. At the end of this file we initialie the particles. 
 3. We have an `NLW_eos.py` file. 
     -   In this file, we initialize the equation of states/models used and their relevant parameters. Depends on `NLW_classes.py`. 
-4. Finally, we have a `NLW_solver_func.py` file. This 
+4. Finally, we have a `NLW_solver_func.py` file. This defines functions that generate/return the equations of motion of mesons and other constraints (charge neutrality, baryon number conservation, and chemical equilibrium with respect to weak processes) and plug into a system of non-linear solvers. 
 
