@@ -1,2 +1,2 @@
-# Overview
+#Overview
 This consists of the code used to ultimately calculate the $g$-mode oscillations
