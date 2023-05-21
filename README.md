@@ -15,7 +15,8 @@ The first thing that we'd like to find is the equation of state: $p(\epsilon)$. 
 The code is structured as follows. It relies heavily on object-oriented programming for the sake of generalizing to arbitrary number of particles. 
 1. We firstly have the `NLW_classes.py` file. In here, we define relevant constants such as $\hbar c = 197.3 MeV/fm$ and give important class definitions. We define an `eos` class. This holds all of the 
     -   We have an `eos` class. 
-    -   We define a `particle` class. This is a parent class for all particles and stores parameters for a given particle such as `mass`, `charge`, `number density`, etc. A specific particle, ie, `electron` would be an instance of this class with `mass` set to $\sim 0.5$ MeV. Then at any time the specific property can just be recalled by calling `electron.mass`. From this parent class, we define child classes: `baryon`, `lepton`, and `meson` that inherit these properties but then have additional functionality (for example, calculating $E_{F_i}$ is different for baryons which interact versus leptons which don't) and allow for summing over mesons or baryons separately. 
+    -   We define a `particle` class. This is a parent class for all particles and stores parameters for a given particle such as `mass`, `charge`, `number density`, etc. A specific particle, ie, `electron` would be an instance of this class with `mass` set to $\sim 0.5$ MeV. Then at any time the specific property can just be recalled by calling `electron.mass`. From this parent class, we define child classes: `baryon`, `lepton`, and `meson` that inherit these properties but then have additional functionality (for example, calculating $E_{F_i}$ is different for baryons which interact versus leptons which don't) and allow for summing over mesons or baryons separately. At the end of this file we initialie the particles. 
 3. We have an `NLW_eos.py` file. 
-4. 
+    -   In this file, we initialize the equation of states/models used and their relevant parameters. Depends on `NLW_classes.py`. 
+4. Finally, we have a `NLW_solver_func.py` file. This 
 
