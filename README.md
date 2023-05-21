@@ -7,4 +7,9 @@ This repository consists of the code used to ultimately calculate the $g$-mode o
 
 
 ## Equilibrium Parameters
-The first thing that we'd like to find is the equation of state: $p(\epsilon)$. In RMF models this reduces to determining the particle momentum $k_{F_i}$ and meson field values (we calculate these values as a function of baryon number density $n_B$) 
+The first thing that we'd like to find is the equation of state: $p(\epsilon)$. In RMF models this reduces to determining the particle momentum $k_{F_i}$ and meson field values (we calculate these values as a function of baryon number density $n_B$). Knowing these two things gives us $p(\epsilon)$. There are expressions for these things in numerous papers, see for instance, Glendenning 1985. 
+
+### Code Specifics
+The code is structured as follows:
+1. We have a 
+
