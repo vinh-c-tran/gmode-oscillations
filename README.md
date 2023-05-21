@@ -14,6 +14,7 @@ The first thing that we'd like to find is the equation of state: $p(\epsilon)$. 
 ### Code Specifics
 The code is structured as follows:
 1. We firstly have the `NLW_classes.py` file. In here, we define relevant constants such as $\hbar c = 197.3 MeV/fm$ and give important class definitions. We define an `eos` class. This holds all of the 
-2. We have an `NLW_eos.py` file. 
-3. 
+  - We have an `eos` class. 
+3. We have an `NLW_eos.py` file. 
+4. 
 
