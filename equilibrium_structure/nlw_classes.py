@@ -1,37 +1,24 @@
 """
-    Class declarations
-        - Declares EOS class (stores parameters of a given model), particle class (stores parameters and functions of a given particle) 
-    
-    Author: Vinh Tran
+    Class declaration 
+    April 18 2022
 """
-
 import numpy as np
 from scipy.optimize import root 
 from scipy.linalg import solve as linalg_solve 
-from nlw_eos_particles import * 
 
-""" Constants  """
-hc = 197.32     # hbar * c in MeV fm for conversion 
-n0 = 0.153      # saturation density 
-pi = np.pi      # pi = 3.14... 
+
+# from Root_Finder.solver_helper import Sigma_min, Sigma_plus 
+
+hc = 197.32
+n0 = 0.153
+pi = np.pi
 
 
 """ Defining all of the classes """
 
+
 class eos():
-    """ 
-        Equation of state class
-
-        For relativistic mean field models this includes:
-        1. The baryon-meson coupling constant strengths such as g_sigma_N, the coupling constant between the sigma meson and the neutron
-        2. Meson-meson interaction coupling constants 
-        3. Values for saturation density n0 or other model dependent parameters like sigma meson mass 
-
-        These are initialized to default values as specified, but when we create an instance of the eos class, we pass to it the relevant parameters 
-        of that specific model. This is highlighted in the `nlw_eos.py` file. 
-    """
-
-
+    """ equation of state class """
     def __init__(self, name, n0 = 0.153, sigma_mass = 550.0,\
         g_sigma_N = 9.57, g_omega_N = 10.61, g_rho_N = 8.20, g_phi_N = 0.0,\
         k = 0.002947, l = -0.001070, xi = 0.0, lambda_omega = 0.0,\
@@ -79,12 +66,7 @@ class eos():
 
 
 class particle():
-    """ 
-        base particle class 
-
-        includes parameters that all particles should have like mass and charge 
-        and functions/methods that update or get these values 
-    """
+    """ base particle class """
     def __init__(self, name = 'NaN', mass = 0.0, charge = 0.0):
         
         self.name = name 
@@ -114,7 +96,7 @@ class particle():
         
     # methods for updating base attributes from dataframe
     # given a baryon density (index) 
-    # assuming dataframe's columns are named following this project's convention 
+    # assuming dataframe is named following this project's convention 
     
     def init_check(self):
         """ checks if particle has been instantized or not """
@@ -126,9 +108,7 @@ class particle():
             
     
     def set_kf(self, index, data_frame):
-        """  reads in the kf value from data frame 
-             This data frame is one that we get when we solve the equilibrium model
-        """
+        """  reads in the kf value from data frame """
 
         self.init_check(self)
 
@@ -166,6 +146,12 @@ class particle():
         self.set_kf(index, data_frame) 
         self.set_num_density(index, data_frame) 
         self.set_frac(index, data_frame) 
+
+
+
+
+
+
 
 
 
@@ -232,13 +218,14 @@ class baryon(particle):
                 self.g_rho = eos_object.g_rho_xi
                 self.g_phi = eos_object.g_phi_xi
                 self.g_xi = eos_object.g_xi_xi 
+
+
+        
+
     
 
     def set_mass_eff(self, sigma_field):
-        """ sets effective mass
-            NOTE: this assumes that we only have a single scalar meson present, the sigma meson
-            This expression is modified by the presence of other scalar mesons  
-        """
+        """ sets effective mass """
         
         self.mass_eff = self.mass - self.g_sigma * sigma_field
         return self.mass_eff 
@@ -314,6 +301,7 @@ class baryon(particle):
             print("self.scalar_density Error: not all of kf or sigma_field are 'NaN' or numeric values.")
             
 
+    
     def set_chem_pot(self, kf = 'NaN', meson_list = []):
         """ sets chemical potential assuming meson objects have already been updated with new field values """
         
@@ -564,6 +552,17 @@ class lepton(particle):
         return self.d_chem_pot 
 
 
+    
+
+     
+        
+    
+
+
+
+
+
+
 class meson(particle):
     """ meson particle class """
 
@@ -645,6 +644,58 @@ class meson(particle):
             self.partial_nb = solution.x[1]   
 
 
+        
+
+
+
+
+
+                
+        
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+""" Making a list of all the relevant particles and preloading them """ 
+
+
+# baryons 
+Neutron = baryon(name = 'Neutron', mass = 939.00, charge = 0.0, kind = 'Nucleon', isospin = -1/2)
+Proton = baryon(name = 'Proton', mass = 939.00, charge = 1.0, kind = 'Nucleon', isospin = 1/2)
+Lambda =  baryon(name = 'Lambda', mass = 1116.00, charge = 0.0, kind = 'Hyperon', isospin = 0.0)
+Sigma_neu = baryon(name = 'Sigma_neu', mass = 1190.00, charge = 0.0, kind = 'Hyperon', isospin = 0.0)
+Sigma_min = baryon(name = 'Sigma_min', mass = 1190.00, charge = - 1.0, kind = 'Hyperon', isospin = -1.0)
+Sigma_plus = baryon(name = 'Sigma_plus', mass = 1190.00, charge = 1.0, kind = 'Hyperon', isospin = 1.0)
+Xi_min = baryon(name = 'Xi_min', mass = 1315.00, charge = -1.0, kind = 'Hyperon', isospin = -1/2)
+Xi_neu = baryon(name = 'Xi_neu', mass = 1315.00, charge = 0.0, kind = 'Hyperon', isospin = 1/2)
+
+
+
+# leptons 
+electron = lepton(name = 'electron', mass = 0.510, charge = -1.0)
+muon = lepton(name = 'muon', mass = 105.65, charge = -1.0)
+
+
+# mesons 
+sigma = meson(name = 'sigma', mass = 492.730)
+omega = meson(name = 'omega', mass = 782.5)
+rho = meson(name = 'rho', mass = 763.0)
+phi = meson(name = 'phi', mass = 1020.0)
+xi = meson(name = 'xi', mass = 980.0)
+
+
+
+
+
 
 """ Miscellaneous equations """
 
@@ -678,6 +729,31 @@ def d_sigma_eom(d_sigma, baryon_ef_list, eos):
         rhs += term1 + term2
     
     return lhs - rhs
+
+
+# def d_xi_eom(d_sigma, d_xi, baryon_ef_list):
+#     """ returns d xi/ dnB equation of motion for NLW model """
+
+#     lhs, rhs = 0.0, 0.0
+
+#     lhs = d_xi * xi.mass**2 
+
+#     for index, baryon in enumerate(baryon_ef_list[1]):
+#         term1_coeff = baryon.g_xi / (np.pi**2) * baryon.set_d_mass_eff(d_sigma, d_xi)
+#         term1_a = baryon.scalar_density 
+#         term1 = term1_coeff * term1_a
+        
+#         term2_coeff = baryon.g_xi * baryon.mass_eff / (np.pi**2)
+#         term2_a = baryon.set_d_kf() * baryon.ef 
+#         term2_b = baryon.kf * baryon_ef_list[0][index]
+#         term2_c = -2 * baryon.mass_eff * baryon.log_fac * baryon.set_d_mass_eff(d_sigma, d_xi)
+#         term2_d = - baryon.mass_eff**2 * baryon.set_d_log_fac(d_sigma, d_xi, baryon_ef_list[0][index])
+        
+#         term2 = term2_coeff * (term2_a + term2_b + term2_c + term2_d)
+        
+#         rhs += term1 + term2
+    
+#     return lhs - rhs 
 
 
 def baryon_d_ef(d_sigma, baryon_ef_list):

@@ -3,27 +3,14 @@ import pandas as pd
 from scipy.optimize import root 
 
 """
-    The functions in this file accomplishes the following tasks
-        1. Sets up the system of non-linear equations that we have to solve in order to determine the 
-            meson field values and baryon and lepton momenta (ie, fractions) as a function of baryon number density nB 
-        2. Solves for the pressure and energy density as well 
-        3. Returns the data in a .csv file with appropriately named columns
+    Trying this again 
+    06-18-2022 
 
-    The main function that would need to be called is just `full_solve`. Everything else is used to set up the problem. 
-
-    In changing from model to model, the meson equations of motion would need to be updated by calculating them in the mean field approximation
-    for the given Lagrangian. 
-
-    In the following the functions make reference to `fermi_var_list`. This is a 2 x N array where the N is the number of baryons and leptons. 
-    1. The first row corresponds to numeric values for the particle fermi momentum kF (initial guesses to pass into the non-linear solver). 
-    2. The second row corresponds to the particle object which itself stores information such as mass and charge and so on. 
-
-    Example. 
-    if fermi_var_list = [0.3, 0.5]
-                     [Neutron, Proton]
-    then fermi_var_list[1][1].mass would return Proton.mass = 939.0 or so. 
-    
+    06-19-2022 updates 
+    - Added SU(6) symmetry coupling constants 
+    - Fixed particle removal index to account for no Xi meson  
 """
+
 
 def sigma_eom(sigma_field, fermi_var_list, eos):
     """ sigma equation of motion """
@@ -43,8 +30,9 @@ def sigma_eom(sigma_field, fermi_var_list, eos):
     return lhs - rhs 
 
 
+
 def omega_eom(omega_field, rho_field, fermi_var_list, eos):
-    """ omega equation of motion in typical NL3 models """
+    """ omega equation of motion in NL3 model """
     
     lhs = omega.mass**2 * omega_field
     lhs += eos.xi / (3 * 2) * Neutron.g_omega**4 * omega_field**3 
@@ -57,6 +45,7 @@ def omega_eom(omega_field, rho_field, fermi_var_list, eos):
             rhs += particle.g_omega * fermi_var_list[0][index]**3 / (3 * np.pi**2)
         
     return lhs - rhs 
+
 
 
 def rho_eom(omega_field, rho_field, fermi_var_list, eos):
@@ -74,6 +63,7 @@ def rho_eom(omega_field, rho_field, fermi_var_list, eos):
     return lhs - rhs 
 
 
+
 def phi_eom(phi_field, fermi_var_list):
     """ rho equation of motion """
     
@@ -85,6 +75,7 @@ def phi_eom(phi_field, fermi_var_list):
             rhs += particle.g_phi * fermi_var_list[0][index]**3 / (3 * np.pi**2) 
         
     return lhs - rhs 
+
 
 
 def charge_neutrality(fermi_var_list):
@@ -320,7 +311,7 @@ def baryon_energy_density(baryon, kf_value, sigma_value):
 
 
 def energy_density(index, data_dictionary, eos):
-    """ gets the energy density in MeV/fm3 """
+    """ gets the energy density in MeV/fm3"""
     
     result = 3 * eos.xi / 24 * Neutron.g_omega**4 * data_dictionary[omega][index]**4 
     result += eos.k / 6 * (Neutron.g_sigma * data_dictionary[sigma][index])**3
