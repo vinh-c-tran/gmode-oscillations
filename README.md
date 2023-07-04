@@ -2,7 +2,7 @@
 
 This repository consists of the code used to ultimately calculate the $g$-mode oscillations for compositions including nucleons and hyperons in the context of relativistic mean field (RMF) models, results of which are presented in a paper here (ArXiV:2212.09875). 
 
-![Image](Results/Gmode/g_mode_all.png)
+![Image](Results/Gmode/g_mode_all.png) ![Image](Results/Gmode/g_mode_all.png)
 
 
 This is split up into three separate code segments that do three different things
